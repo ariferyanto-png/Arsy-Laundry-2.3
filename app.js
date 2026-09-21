@@ -2236,3 +2236,102 @@ function exportReportExcel() {
   
   showToast("Laporan berhasil diunduh dalam format Excel");
 }
+// ==========================================
+// FITUR BACKUP & RESTORE DATA ARSY LAUNDRY (VERSI FINAL)
+// ==========================================
+
+function eksporTransaksiCSV() {
+  try {
+    if (!transactions || transactions.length === 0) {
+      showToast("Tidak ada data transaksi untuk diekspor!");
+      return;
+    }
+
+    let csvContent = "ID Transaksi,Tanggal,Nama Pelanggan,Total,Status,Pembayaran\n";
+
+    transactions.forEach(t => {
+      const id = t.id || '-';
+      const tgl = t.date ? new Date(t.date).toISOString() : '-';
+      const nama = '"' + (t.customerName || '-') + '"'; 
+      const total = t.total || 0;
+      const status = t.status || '-';
+      const pembayaran = t.paymentStatus || 'Belum Lunas';
+
+      csvContent += id + "," + tgl + "," + nama + "," + total + "," + status + "," + pembayaran + "\n";
+    });
+
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Laporan_Transaksi_Arsy_" + new Date().toLocaleDateString("id-ID").replace(/\//g,"-") + ".csv";
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showToast("Laporan CSV Berhasil Diunduh!");
+  } catch(e) { 
+    alert("Gagal Ekspor CSV: " + e.message); 
+  }
+}
+
+function backupDatabaseLengkap() {
+  try {
+    // Mengumpulkan seluruh data dari variabel asli app.js
+    const fullData = {
+      transactions: transactions,
+      customers: savedCustomers,
+      services: servicePrices,
+      outlet: arsyOutlet,
+      notaSettings: notaSettings
+    };
+
+    const dataString = JSON.stringify(fullData, null, 2);
+    const blob = new Blob([dataString], { type: 'application/json' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = "Backup_App_Arsy_" + new Date().toLocaleDateString("id-ID").replace(/\//g,"-") + ".json";
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    
+    showToast("File Backup Tersimpan!");
+  } catch(e) { 
+    alert("Gagal Backup: " + e.message); 
+  }
+}
+
+function restoreDatabaseLengkap(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const importedData = JSON.parse(e.target.result);
+      if (importedData && (importedData.transactions || importedData.customers)) {
+        if (confirm("PERINGATAN!\nTindakan ini akan menimpa seluruh data aplikasi di HP ini.\n\nLanjutkan?")) {
+          
+          // Mengembalikan data ke variabel asli app.js
+          if (importedData.transactions) transactions = importedData.transactions;
+          if (importedData.customers) savedCustomers = importedData.customers;
+          if (importedData.services) servicePrices = importedData.services;
+          if (importedData.outlet) arsyOutlet = importedData.outlet;
+          if (importedData.notaSettings) notaSettings = importedData.notaSettings;
+          
+          // Panggil fungsi simpan bawaan jenengan
+          saveData(); 
+          
+          alert("Data berhasil dipulihkan! Aplikasi akan dimuat ulang.");
+          window.location.reload(); 
+        }
+      } else { 
+        alert("Gagal: Format file tidak valid!"); 
+      }
+    } catch (error) { 
+      alert("Terjadi kesalahan membaca file. Pastikan format .json"); 
+    }
+  };
+  reader.readAsText(file);
+  event.target.value = ''; 
+}
