@@ -235,8 +235,30 @@
           </button>
         </div>
       </div>
-    </section>
+            <!-- ... tombol menu lainnya ... -->
+      </div> <!-- Ini adalah penutup div class="report-content" -->
 
+      <!-- ============================================== -->
+      <!-- TAMBAHKAN KOTAK BACKUP & RESTORE DI SINI       -->
+      <!-- ============================================== -->
+      <div style="background:white; border-radius:16px; border:1px solid var(--border); padding:20px; margin: 0 15px 15px 15px;">
+        <h3 style="font-size:15px; margin-bottom:15px; color:var(--text); font-weight:bold;">Pencadangan Data (Backup)</h3>
+        
+        <p style="font-size:12px; color:var(--muted); margin-bottom:10px;">Unduh laporan 6 kolom untuk di-copy-paste ke Google Sheet.</p>
+        <button onclick="eksporTransaksiCSV()" class="submit-button" style="background:#16a34a; margin-top:0; margin-bottom:15px;"><i class="fas fa-file-excel"></i> Ekspor Laporan Excel/CSV</button>
+        
+        <hr style="border:0; border-top:1px dashed var(--border); margin-bottom:15px;">
+        
+        <p style="font-size:12px; color:var(--muted); margin-bottom:10px;">Gunakan fitur ini untuk mencadangkan SELURUH data aplikasi.</p>
+        <button onclick="backupDatabaseLengkap()" class="submit-button" style="background:var(--primary); margin-top:0; margin-bottom:10px;"><i class="fas fa-download"></i> Backup Seluruh Data App (.json)</button>
+        
+        <input type="file" id="fileRestore" accept=".json" style="display:none;" onchange="restoreDatabaseLengkap(event)">
+        <button onclick="document.getElementById('fileRestore').click()" class="submit-button" style="background:#f8fafc; color:var(--text); border:1px solid var(--border); margin-top:0;"><i class="fas fa-upload"></i> Restore / Kembalikan Data App</button>
+      </div>
+      <!-- ============================================== -->
+
+    </section>
+    
     <!-- Printer Page -->
     <section id="printerPage" class="page report-page">
       <div class="report-header" style="display: flex; justify-content: space-between; align-items: center;">
