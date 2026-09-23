@@ -2319,11 +2319,16 @@ function restoreDatabaseLengkap(event) {
           if (importedData.outlet) arsyOutlet = importedData.outlet;
           if (importedData.notaSettings) notaSettings = importedData.notaSettings;
           
-          // Panggil fungsi simpan bawaan jenengan
+                    // Panggil fungsi simpan dan render tampilan seketika
           saveData(); 
+          renderAll();
           
-          alert("Data berhasil dipulihkan! Aplikasi akan dimuat ulang.");
-          window.location.reload(); 
+          alert("Data berhasil dipulihkan ke HP! Sedang memompa data ke Cloud...");
+          
+          // Beri waktu 3 detik agar pengiriman data ke Google Sheet selesai sebelum halaman dimuat ulang
+          setTimeout(function() {
+             window.location.reload(); 
+          }, 3000);
         }
       } else { 
         alert("Gagal: Format file tidak valid!"); 
