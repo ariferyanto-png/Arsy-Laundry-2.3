@@ -2301,34 +2301,32 @@ function backupDatabaseLengkap() {
     alert("Gagal Backup: " + e.message); 
   }
 }
-
 function restoreDatabaseLengkap(event) {
   const file = event.target.files[0];
   if (!file) return;
   const reader = new FileReader();
-  reader.onload = function(e) {
+  
+  // Kata 'async' ditambahkan di sini agar sistem bisa dipaksa menunggu
+  reader.onload = async function(e) {
     try {
       const importedData = JSON.parse(e.target.result);
       if (importedData && (importedData.transactions || importedData.customers)) {
         if (confirm("PERINGATAN!\nTindakan ini akan menimpa seluruh data aplikasi di HP ini.\n\nLanjutkan?")) {
           
-          // Mengembalikan data ke variabel asli app.js
           if (importedData.transactions) transactions = importedData.transactions;
           if (importedData.customers) savedCustomers = importedData.customers;
           if (importedData.services) servicePrices = importedData.services;
           if (importedData.outlet) arsyOutlet = importedData.outlet;
           if (importedData.notaSettings) notaSettings = importedData.notaSettings;
           
-                    // Panggil fungsi simpan dan render tampilan seketika
-          saveData(); 
+          // Render ke layar seketika
           renderAll();
           
-          alert("Data berhasil dipulihkan ke HP! Sedang memompa data ke Cloud...");
+          // KUNCI AMAN: Paksa browser menunggu sampai data masuk ke Google Sheets
+          await saveData(); 
           
-          // Beri waktu 3 detik agar pengiriman data ke Google Sheet selesai sebelum halaman dimuat ulang
-          setTimeout(function() {
-             window.location.reload(); 
-          }, 3000);
+          alert("Sempurna! Data berhasil dipulihkan dan sukses tersimpan ke Google Drive.");
+          window.location.reload(); 
         }
       } else { 
         alert("Gagal: Format file tidak valid!"); 
@@ -2340,3 +2338,4 @@ function restoreDatabaseLengkap(event) {
   reader.readAsText(file);
   event.target.value = ''; 
 }
+
