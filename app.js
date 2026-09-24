@@ -134,7 +134,7 @@ async function saveData() {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: JSON.stringify(payload)
+      body: "data=" + encodeURIComponent(JSON.stringify(payload))
     });
   } catch (err) {
     console.log("Sinkronisasi cloud tertunda.");
