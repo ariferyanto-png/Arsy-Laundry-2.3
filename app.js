@@ -133,8 +133,8 @@ async function saveData() {
     await fetch(WEB_APP_URL, {
       method: "POST",
       mode: "no-cors",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: "data=" + encodeURIComponent(JSON.stringify(payload))
+      headers: { "Content-Type": "text/plain;charset=utf-8" },
+body: JSON.stringify(payload)
     });
   } catch (err) {
     console.log("Sinkronisasi cloud tertunda.");
