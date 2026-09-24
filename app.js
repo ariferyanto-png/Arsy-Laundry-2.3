@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw-HShq2qrc7RfoSxla2I9VN5ky4iiBbEwIRgdu26cps47MLrk2rY1nId3_DlSv4UsVqQ/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8XeO3-LYV9aqbq4rJm_6ccvzAP0YDaj_rcyXeS9JzLN0xNnkgtlk7_qW5oLqY0tF29g/exec";
 
 
 const safeStorage = {
@@ -134,7 +134,7 @@ async function saveData() {
       method: "POST",
       mode: "no-cors",
       headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: "data=" + encodeURIComponent(JSON.stringify(payload))
+      body: JSON.stringify(payload)
     });
   } catch (err) {
     console.log("Sinkronisasi cloud tertunda.");
