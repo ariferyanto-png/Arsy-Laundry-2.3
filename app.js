@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw8XeO3-LYV9aqbq4rJm_6ccvzAP0YDaj_rcyXeS9JzLN0xNnkgtlk7_qW5oLqY0tF29g/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbw_53tNQMXofkHpWQQuHLb9b0zViAywBLk0CAODVRwDOUCu0rLSRz4_DDE97E6LtKCZ/exec";
 
 
 const safeStorage = {
